@@ -10,6 +10,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.testfx.framework.junit.ApplicationTest;
 
+import client.Main;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -85,8 +86,21 @@ public class MainTest extends ApplicationTest {
 		b = from(p).lookup("#enterButton").query();
 		tf = from(p).lookup("#messageInputField").query();
 		t = from(p).lookup("#messages").query();
-				
-		// simulates user typing "Hello"
+		
+		String initMessage = t.getText();
+		
+		// simulates user typing no input and pressing 'Enter' button
+		clickOn(tf);
+		clickOn(b);
+		
+		String currentMessage = t.getText();
+		
+		// no validation message is expected
+		assertEquals(initMessage, currentMessage);
+		
+		initMessage = currentMessage;
+		
+		// simulates user typing "Hello" and submitting via 'Enter' button
 		clickOn(tf);
 		press(KeyCode.SHIFT);
 		type(KeyCode.H); 
@@ -94,8 +108,23 @@ public class MainTest extends ApplicationTest {
 		type(KeyCode.E, KeyCode.L, KeyCode.L, KeyCode.O);
 		clickOn(b);
 		
-		String message = t.getText().split("\n")[1]; // retrieves server message after server welcome message
+		currentMessage = t.getText();
 		
-		assertTrue(message.length() != 0);
+		// validation message is expected
+		assertTrue(initMessage.compareTo(currentMessage) < 0);
+		
+		initMessage = currentMessage;
+		
+		// simulates user typing "Hello" and submitting via 'Enter' key
+		clickOn(tf);
+		press(KeyCode.SHIFT);
+		type(KeyCode.H); 
+		release(KeyCode.SHIFT);
+		type(KeyCode.E, KeyCode.L, KeyCode.L, KeyCode.O, KeyCode.ENTER);		
+		
+		currentMessage = t.getText();
+		
+		// validation is expected
+		assertTrue(initMessage.compareTo(currentMessage) < 0);
 	}
 }
