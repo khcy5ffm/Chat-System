@@ -10,5 +10,7 @@
 	
 	    testCompile 'junit:junit:4.12'
 	    testCompile 'org.jmockit:jmockit:1.38'
+	    testCompile 'org.testfx:testfx-core:4.0.11-alpha'
+		testCompile 'org.testfx:testfx-junit:4.0.11-alpha'
 	}
 
